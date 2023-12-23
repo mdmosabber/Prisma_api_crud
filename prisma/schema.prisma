@@ -1,0 +1,33 @@
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+
+model User {
+  id        Int      @id @default(autoincrement())
+  firstName String
+  lastName  String
+  age       Int
+  grade     String
+  courses   Course[]
+  createdAt DateTime @default(now()) @db.Timestamp(0)
+  updatedAt DateTime @default(now()) @db.Timestamp(0) @updatedAt
+}
+
+
+model Course {
+  id       Int      @id @default(autoincrement())
+  name     String
+  user     User     @relation(fields: [userID], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  userID   Int
+  createdAt DateTime @default(now()) @db.Timestamp(0)
+  updatedAt DateTime @default(now()) @db.Timestamp(0) @updatedAt
+}
+
+
